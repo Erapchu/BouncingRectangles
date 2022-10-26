@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddGrpc();
+builder.Services.AddHostedService<CoordinatesGeneratorService>();
 
 var app = builder.Build();
 
