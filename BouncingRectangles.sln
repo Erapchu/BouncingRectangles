@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BouncingRectangles", "BouncingRectangles\BouncingRectangles.csproj", "{427F2C3E-2175-45F1-A6AF-25B807BA5536}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BouncingRectangles.Common", "BouncingRectangles\BouncingRectangles.Common.csproj", "{427F2C3E-2175-45F1-A6AF-25B807BA5536}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BouncingRectangles.Server", "BouncingRectangles.Server\BouncingRectangles.Server.csproj", "{B6D48290-7E93-434C-8AE1-62A646086D1A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BouncingRectangles.Server", "BouncingRectangles.Server\BouncingRectangles.Server.csproj", "{B6D48290-7E93-434C-8AE1-62A646086D1A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BouncingRectangles.Protos", "BouncingRectangles.Protos\BouncingRectangles.Protos.csproj", "{62C71D31-120A-48A2-A691-8499C6353094}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BouncingRectangles.Protos", "BouncingRectangles.Protos\BouncingRectangles.Protos.csproj", "{62C71D31-120A-48A2-A691-8499C6353094}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
