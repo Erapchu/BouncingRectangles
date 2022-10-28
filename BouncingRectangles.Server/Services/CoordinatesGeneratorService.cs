@@ -39,15 +39,17 @@ namespace BouncingRectangles.Server.Services
                 while (!cancellationToken.IsCancellationRequested)
                 {
                     var rectangle = _rectangleFactory.GetRectangle();
-                    rectangle.X = RandomNumberGenerator.GetInt32(Constants.FieldWidth);
-                    rectangle.Y = RandomNumberGenerator.GetInt32(Constants.FieldHeight);
-
-                    cancellationToken.ThrowIfCancellationRequested();
-
-                    lock (_coordinatedRects)
+                    if (rectangle is not null)
                     {
-                        _coordinatedRects.Remove(rectangle.Id);
-                        _coordinatedRects.Add(rectangle.Id, rectangle);
+                        rectangle.X = RandomNumberGenerator.GetInt32(Constants.FieldWidth);
+                        rectangle.Y = RandomNumberGenerator.GetInt32(Constants.FieldHeight);
+                        cancellationToken.ThrowIfCancellationRequested();
+
+                        lock (_coordinatedRects)
+                        {
+                            _coordinatedRects.Remove(rectangle.Id);
+                            _coordinatedRects.Add(rectangle.Id, rectangle);
+                        }
                     }
 
                     await Task.Delay(_generateInterval, cancellationToken);

@@ -45,6 +45,7 @@ namespace BouncingRectangles.Server.Services
                 var bouncingRectangleUpdate = new BouncingRectangleUpdateDto();
                 foreach (var rect in rectangles)
                 {
+                    // Fill bouncing rectangles dto
                     bouncingRectangleUpdate.Rectangles.Add(new BouncingRectangleDto()
                     {
                         Height = rect.Height,
