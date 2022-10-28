@@ -34,15 +34,16 @@ namespace BouncingRectangles.Server.Services
 
         private async Task GenereateCoordinates(CancellationToken cancellationToken)
         {
-            while (true)
+            try
             {
-                try
+                while (!cancellationToken.IsCancellationRequested)
                 {
-                    cancellationToken.ThrowIfCancellationRequested();
                     var rectangle = _rectangleFactory.GetRectangle();
                     rectangle.X = RandomNumberGenerator.GetInt32(Constants.FieldWidth);
                     rectangle.Y = RandomNumberGenerator.GetInt32(Constants.FieldHeight);
-                    
+
+                    cancellationToken.ThrowIfCancellationRequested();
+
                     lock (_coordinatedRects)
                     {
                         _coordinatedRects.Remove(rectangle.Id);
@@ -51,14 +52,14 @@ namespace BouncingRectangles.Server.Services
 
                     await Task.Delay(_generateInterval, cancellationToken);
                 }
-                catch (OperationCanceledException)
-                {
-                    break;
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, null);
-                }
+            }
+            catch (OperationCanceledException)
+            {
+                // Ignored
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, null);
             }
         }
 
