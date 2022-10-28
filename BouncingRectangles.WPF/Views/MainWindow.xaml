@@ -17,7 +17,7 @@
         <ItemsControl x:Name="MainItemsControl" ItemsSource="{Binding RectangleVMs}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <Canvas />
+                    <Canvas IsItemsHost="True" />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
@@ -30,18 +30,21 @@
                         Height="{Binding Height}"
                         BorderBrush="Blue"
                         BorderThickness="2">
+                        <Border.RenderTransform>
+                            <TranslateTransform x:Name="MoveMeBaby" X="{Binding X, Mode=OneTime}" Y="{Binding Y, Mode=OneTime}" />
+                        </Border.RenderTransform>
                         <Border.Triggers>
                             <EventTrigger RoutedEvent="Binding.TargetUpdated">
                                 <BeginStoryboard>
                                     <Storyboard Name="MyStoryboard">
                                         <DoubleAnimation
-                                            Storyboard.TargetName="MyRectangle"
-                                            Storyboard.TargetProperty="(Canvas.Left)"
+                                            Storyboard.TargetName="MoveMeBaby"
+                                            Storyboard.TargetProperty="X"
                                             To="{Binding X, NotifyOnTargetUpdated=True}"
                                             Duration="0:0:1" />
                                         <DoubleAnimation
-                                            Storyboard.TargetName="MyRectangle"
-                                            Storyboard.TargetProperty="(Canvas.Top)"
+                                            Storyboard.TargetName="MoveMeBaby"
+                                            Storyboard.TargetProperty="Y"
                                             To="{Binding Y, NotifyOnTargetUpdated=True}"
                                             Duration="0:0:1" />
                                     </Storyboard>
@@ -54,8 +57,9 @@
             </ItemsControl.ItemTemplate>
             <ItemsControl.ItemContainerStyle>
                 <Style TargetType="{x:Type ContentPresenter}">
-                    <Setter Property="Canvas.Left" Value="{Binding X}" />
-                    <Setter Property="Canvas.Top" Value="{Binding Y}" />
+                    <!--  Without animations  -->
+                    <!--<Setter Property="Canvas.Left" Value="{Binding X}" />-->
+                    <!--<Setter Property="Canvas.Top" Value="{Binding Y}" />-->
                 </Style>
             </ItemsControl.ItemContainerStyle>
         </ItemsControl>
