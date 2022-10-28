@@ -5,7 +5,7 @@
   </PropertyGroup>
 
     <ItemGroup>
-	    <Protobuf Include="..\BouncingRectangles.Protos\Protos\bouncing_rectangles.proto" GrpcServices="Server" />
+	    <Protobuf Include="..\BouncingRectangles.Common\Protos\bouncing_rectangles.proto" GrpcServices="Server" />
     </ItemGroup>
 
   <ItemGroup>
@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BouncingRectangles.Protos\BouncingRectangles.Common.csproj" />
+    <ProjectReference Include="..\BouncingRectangles.Common\BouncingRectangles.Common.csproj" />
   </ItemGroup>
 
 </Project>

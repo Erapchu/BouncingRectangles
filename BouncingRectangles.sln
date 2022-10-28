@@ -5,7 +5,7 @@ VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BouncingRectangles.Server", "BouncingRectangles.Server\BouncingRectangles.Server.csproj", "{B6D48290-7E93-434C-8AE1-62A646086D1A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BouncingRectangles.Common", "BouncingRectangles.Protos\BouncingRectangles.Common.csproj", "{62C71D31-120A-48A2-A691-8499C6353094}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BouncingRectangles.Common", "BouncingRectangles.Common\BouncingRectangles.Common.csproj", "{62C71D31-120A-48A2-A691-8499C6353094}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
