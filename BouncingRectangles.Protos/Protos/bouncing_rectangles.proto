@@ -13,11 +13,13 @@ message SubscribeRequest {
 }
 
 message BouncingRectangleUpdate {
-	repeated BouncingRectangle rectangle = 1;
+	repeated BouncingRectangle rectangles = 1;
 }
 
 message BouncingRectangle {
 	string id = 1;
 	double x = 2;
 	double y = 3;
+	double width = 4;
+	double height = 5;
 }

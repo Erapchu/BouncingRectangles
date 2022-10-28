@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace BouncingRectangles.Server.Services
 {
-    public class BouncingRectangeService : Protos.BouncingRectangeHost.BouncingRectangeHostBase
+    public class BouncingRectangeGrpcService : Protos.BouncingRectangeHost.BouncingRectangeHostBase
     {
         public override Task Subscribe(
             SubscribeRequest request,

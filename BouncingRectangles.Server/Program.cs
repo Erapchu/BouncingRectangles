@@ -5,11 +5,12 @@ using Microsoft.Extensions.DependencyInjection;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddGrpc();
-builder.Services.AddHostedService<CoordinatesGeneratorService>();
+builder.Services.AddSingleton<ICoordinatesGeneratorService, CoordinatesGeneratorService>();
+builder.Services.AddSingleton<IRectangleFactory, RectangleFactory>();
 
 var app = builder.Build();
 
-app.MapGrpcService<BouncingRectangeService>();
+app.MapGrpcService<BouncingRectangeGrpcService>();
 
 app.MapGet("/", () => "Hello World!");
 
