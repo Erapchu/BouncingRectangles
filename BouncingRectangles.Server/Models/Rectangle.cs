@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading;
 
 namespace BouncingRectangles.Server.Models
 {
+    [DebuggerDisplay("w:{Width}, h:{Height}, x:{X}, y:{Y}")]
     public class Rectangle
     {
         public int Width { get; init; }

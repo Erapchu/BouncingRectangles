@@ -5,7 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddGrpc();
-builder.Services.AddSingleton<ICoordinatesGeneratorService, CoordinatesGeneratorService>();
+builder.Services.AddHostedService<CoordinatesGeneratorService>();
+builder.Services.AddSingleton<ICoordinatesGeneratorService>(s => s.GetService<CoordinatesGeneratorService>());
 builder.Services.AddSingleton<IRectangleFactory, RectangleFactory>();
 builder.Services.AddSingleton<IRectangleSubscriberFactory, RectangleSubscriberFactory>();
 builder.Services.AddTransient<IRectangleSubscriber, RectangleSubscriber>();

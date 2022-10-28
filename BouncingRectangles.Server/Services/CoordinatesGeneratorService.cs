@@ -22,6 +22,7 @@ namespace BouncingRectangles.Server.Services
         private readonly IRectangleFactory _rectangleFactory;
         private readonly TimeSpan _generateInterval = TimeSpan.FromSeconds(1);
         private readonly Dictionary<Guid, Rectangle> _coordinatedRects = new();
+        private readonly List<Task> _tasks = new();
         private CancellationTokenSource _cancellationTokenSource;
 
         public CoordinatesGeneratorService(
@@ -73,7 +74,7 @@ namespace BouncingRectangles.Server.Services
             var token = _cancellationTokenSource.Token;
             for (int i = 0; i < tasksCount; i++)
             {
-                Task.Run(() => GenereateCoordinates(token), token);
+                _tasks.Add(Task.Run(() => GenereateCoordinates(token), token));
             }
 
             return Task.CompletedTask;
