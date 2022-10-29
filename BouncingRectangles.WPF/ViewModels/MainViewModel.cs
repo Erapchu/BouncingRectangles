@@ -1,9 +1,10 @@
-﻿using BouncingRectangles.Protos;
+﻿using BouncingRectangles.Server.Protos;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Grpc.Core;
 using Grpc.Net.Client;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
@@ -37,6 +38,8 @@ namespace BouncingRectangles.WPF.ViewModels
         }
         #endregion
 
+        private readonly Dictionary<Guid, RectangleViewModel> _rectanglesVMMap = new();
+
         [ObservableProperty]
         private bool _loading;
 
@@ -56,8 +59,8 @@ namespace BouncingRectangles.WPF.ViewModels
 
                 await Task.Run(() =>
                 {
-                    using var channel = GrpcChannel.ForAddress("http://localhost:5115");
-                    var client = new BouncingRectangles.Protos.BouncingRectangesDistributor.BouncingRectangesDistributorClient(channel);
+                    using var channel = GrpcChannel.ForAddress("https://localhost:7115");
+                    var client = new BouncingRectangesDistributor.BouncingRectangesDistributorClient(channel);
 
                     var request = new SubscribeRequestDto();
                     request.Id = Guid.NewGuid().ToString();
@@ -77,12 +80,27 @@ namespace BouncingRectangles.WPF.ViewModels
         {
             try
             {
-                await foreach (var updateDto in stream.ReadAllAsync(token))
+                await foreach (var updateDto in stream.ReadAllAsync(/*token*/))
                 {
                     if (updateDto is null)
                         continue;
 
+                    foreach (var rectangle in updateDto.Rectangles)
+                    {
+                        if (!Guid.TryParse(rectangle.Id, out Guid rectId))
+                            continue;
 
+                        if (_rectanglesVMMap.TryGetValue(rectId, out var rectangleVM))
+                        {
+                            // Existing
+                            rectangleVM?.Update(rectangle);
+                        }
+                        else
+                        {
+                            // Add new
+                            _rectanglesVMMap.Add(rectId, new RectangleViewModel(rectangle));
+                        }
+                    }
                 }
             }
             catch (RpcException e)

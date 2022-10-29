@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using BouncingRectangles.Server.Protos;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 
 namespace BouncingRectangles.WPF.ViewModels
@@ -7,22 +8,39 @@ namespace BouncingRectangles.WPF.ViewModels
     internal partial class RectangleViewModel
     {
         [ObservableProperty]
-        private int _x;
+        private double _x;
 
         [ObservableProperty]
-        private int _y;
+        private double _y;
 
         [ObservableProperty]
-        private int _width;
+        private double _width;
 
         [ObservableProperty]
-        private int _height;
-        
+        private double _height;
+
         public Guid Id { get; }
 
         public RectangleViewModel()
         {
 
+        }
+
+        public RectangleViewModel(BouncingRectangleDto bouncingRectangleDto)
+        {
+            if (bouncingRectangleDto is null)
+                throw new ArgumentNullException(nameof(bouncingRectangleDto));
+
+            _x = bouncingRectangleDto.X;
+            _y = bouncingRectangleDto.Y;
+            _width = bouncingRectangleDto.Width;
+            _height = bouncingRectangleDto.Height;
+        }
+
+        public void Update(BouncingRectangleDto bouncingRectangleDto)
+        {
+            X = bouncingRectangleDto.X;
+            Y = bouncingRectangleDto.Y;
         }
     }
 }

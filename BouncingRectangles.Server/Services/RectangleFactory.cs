@@ -28,7 +28,7 @@ namespace BouncingRectangles.Server.Services
         {
             lock (_rectangles)
             {
-                if (_pointer > _rectangles.Count)
+                if (_pointer >= _rectangles.Count)
                     _pointer = 0;
 
                 var rectangle = _rectangles[_pointer];
