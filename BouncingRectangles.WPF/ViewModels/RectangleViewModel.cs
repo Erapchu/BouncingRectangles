@@ -35,6 +35,10 @@ namespace BouncingRectangles.WPF.ViewModels
             _y = bouncingRectangleDto.Y;
             _width = bouncingRectangleDto.Width;
             _height = bouncingRectangleDto.Height;
+            if (Guid.TryParse(bouncingRectangleDto.Id, out Guid guid))
+            {
+                Id = guid;
+            }
         }
 
         public void Update(BouncingRectangleDto bouncingRectangleDto)
