@@ -1,4 +1,4 @@
-﻿using BouncingRectangles.Common;
+﻿using BouncingRectangles.Domain;
 using BouncingRectangles.WPF.ViewModels;
 using System.Windows;
 

@@ -2,8 +2,8 @@
     x:Class="BouncingRectangles.WPF.Views.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:common="clr-namespace:BouncingRectangles.Common;assembly=BouncingRectangles.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:local="clr-namespace:BouncingRectangles.WPF.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:BouncingRectangles.WPF.ViewModels"
@@ -13,7 +13,23 @@
     d:DataContext="{x:Static vm:MainViewModel.DesignTimeInstance}"
     x:ClassModifier="internal"
     mc:Ignorable="d">
+    <Window.Resources>
+        <ResourceDictionary>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        </ResourceDictionary>
+    </Window.Resources>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadedCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid>
+        <TextBlock
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Opacity="0.7"
+            Text="Loading..."
+            Visibility="{Binding Loading, Converter={StaticResource BooleanToVisibilityConverter}}" />
         <ItemsControl x:Name="MainItemsControl" ItemsSource="{Binding RectangleVMs}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -24,8 +40,6 @@
                 <DataTemplate DataType="{x:Type vm:RectangleViewModel}">
                     <Border
                         Name="MyRectangle"
-                        Canvas.Left="0"
-                        Canvas.Top="0"
                         Width="{Binding Width}"
                         Height="{Binding Height}"
                         BorderBrush="Blue"
