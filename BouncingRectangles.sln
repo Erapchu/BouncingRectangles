@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BouncingRectangles.Client",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BouncingRectangles.WPF", "BouncingRectangles.WPF\BouncingRectangles.WPF.csproj", "{9CAE8C22-64F1-4FB8-AAE8-AF4AD66C47F7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BouncingRectangles.Domain", "BouncingRectangles.Domain\BouncingRectangles.Domain.csproj", "{94501BD5-0993-41BA-9FDF-1046F4EAFB5B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{9CAE8C22-64F1-4FB8-AAE8-AF4AD66C47F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9CAE8C22-64F1-4FB8-AAE8-AF4AD66C47F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9CAE8C22-64F1-4FB8-AAE8-AF4AD66C47F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94501BD5-0993-41BA-9FDF-1046F4EAFB5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94501BD5-0993-41BA-9FDF-1046F4EAFB5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94501BD5-0993-41BA-9FDF-1046F4EAFB5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94501BD5-0993-41BA-9FDF-1046F4EAFB5B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

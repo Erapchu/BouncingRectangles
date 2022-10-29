@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BouncingRectangles.Common\BouncingRectangles.Common.csproj" />
+    <ProjectReference Include="..\BouncingRectangles.Domain\BouncingRectangles.Domain.csproj" />
   </ItemGroup>
 
 </Project>

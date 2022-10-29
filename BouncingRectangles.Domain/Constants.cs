@@ -1,4 +1,4 @@
-﻿namespace BouncingRectangles.Client
+﻿namespace BouncingRectangles.Domain
 {
     public static class Constants
     {
