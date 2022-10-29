@@ -1,5 +1,5 @@
-﻿using BouncingRectangles.Protos;
-using BouncingRectangles.Server.Models;
+﻿using BouncingRectangles.Server.Models;
+using BouncingRectangles.Server.Protos;
 using Grpc.Core;
 using Microsoft.Extensions.Logging;
 using System;
