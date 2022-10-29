@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BouncingRectangles.Server.Services
 {
-    public class BouncingRectangeGrpcService : Protos.BouncingRectangeHost.BouncingRectangeHostBase
+    public class BouncingRectangeGrpcService : Protos.BouncingRectangesDistributor.BouncingRectangesDistributorBase
     {
         private readonly IRectangleSubscriberFactory _rectangleSubscriberFactory;
         private readonly ILogger<BouncingRectangeGrpcService> _logger;
