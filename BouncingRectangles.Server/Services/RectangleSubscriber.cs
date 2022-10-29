@@ -16,7 +16,7 @@ namespace BouncingRectangles.Server.Services
         public event EventHandler<RectangleUpdateEventArgs> Update;
         private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly Task _task;
-        private readonly TimeSpan _updateTimeout = TimeSpan.FromMilliseconds(500);
+        private readonly TimeSpan _updateTimeout = TimeSpan.FromMilliseconds(200);
         private readonly ILogger<RectangleSubscriber> _logger;
         private readonly ICoordinatesGeneratorService _coordinatesGeneratorService;
 

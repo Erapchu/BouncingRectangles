@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BouncingRectangles.Domain;
+using System;
 using System.Diagnostics;
 using System.Threading;
 
@@ -33,8 +34,8 @@ namespace BouncingRectangles.Server.Models
         {
             return new Rectangle()
             {
-                Width = 50,
-                Height = 50,
+                Width = Constants.RectangleWidth,
+                Height = Constants.RectangleHeight,
                 Id = Guid.NewGuid(),
             };
         }

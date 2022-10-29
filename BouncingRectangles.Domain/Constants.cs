@@ -2,7 +2,9 @@
 {
     public static class Constants
     {
-        public static int FieldWidth { get; } = 500;
-        public static int FieldHeight { get; } = 500;
+        public const int FieldWidth = 500;
+        public const int FieldHeight = 500;
+        public const int RectangleWidth = 20;
+        public const int RectangleHeight = 20;
     }
 }

@@ -20,7 +20,7 @@ namespace BouncingRectangles.Server.Services
     {
         private readonly ILogger<CoordinatesGeneratorService> _logger;
         private readonly IRectangleFactory _rectangleFactory;
-        private readonly TimeSpan _generateInterval = TimeSpan.FromSeconds(1);
+        private readonly TimeSpan _generateInterval = TimeSpan.FromMilliseconds(200);
         private readonly Dictionary<Guid, Rectangle> _coordinatedRects = new();
         private readonly List<Task> _tasks = new();
         private CancellationTokenSource _cancellationTokenSource;
@@ -37,13 +37,16 @@ namespace BouncingRectangles.Server.Services
         {
             try
             {
+                var maxX = Constants.FieldWidth - Constants.RectangleWidth;
+                var maxY = Constants.FieldHeight - Constants.RectangleHeight;
+
                 while (!cancellationToken.IsCancellationRequested)
                 {
                     var rectangle = _rectangleFactory.GetRectangle();
                     if (rectangle is not null)
                     {
-                        rectangle.X = RandomNumberGenerator.GetInt32(Constants.FieldWidth);
-                        rectangle.Y = RandomNumberGenerator.GetInt32(Constants.FieldHeight);
+                        rectangle.X = RandomNumberGenerator.GetInt32(maxX);
+                        rectangle.Y = RandomNumberGenerator.GetInt32(maxY);
                         cancellationToken.ThrowIfCancellationRequested();
 
                         lock (_coordinatedRects)
