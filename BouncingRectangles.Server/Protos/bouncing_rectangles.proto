@@ -1,0 +1,25 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "BouncingRectangles.Protos";
+
+package BouncingRectangleServer;
+
+service BouncingRectangeHost {
+	rpc Subscribe (SubscribeRequestDto) returns (stream BouncingRectangleUpdateDto);
+}
+
+message SubscribeRequestDto {
+	string id = 1;
+}
+
+message BouncingRectangleUpdateDto {
+	repeated BouncingRectangleDto rectangles = 1;
+}
+
+message BouncingRectangleDto {
+	string id = 1;
+	double x = 2;
+	double y = 3;
+	double width = 4;
+	double height = 5;
+}
