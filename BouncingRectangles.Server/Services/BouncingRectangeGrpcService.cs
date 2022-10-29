@@ -28,6 +28,8 @@ namespace BouncingRectangles.Server.Services
             ServerCallContext context)
         {
             var subscriber = _rectangleSubscriberFactory.GetSubscriber();
+            if (subscriber is null)
+                return;
             subscriber.Update += async (sender, e) =>
                 await WriteUpdateAsync(responseStream, e.Rectangles);
 

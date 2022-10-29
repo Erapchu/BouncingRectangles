@@ -19,7 +19,7 @@ namespace BouncingRectangles.Server.Services
 
         public IRectangleSubscriber GetSubscriber()
         {
-            return _serviceProvider.GetService<RectangleSubscriber>();
+            return _serviceProvider.GetService<IRectangleSubscriber>();
         }
     }
 }

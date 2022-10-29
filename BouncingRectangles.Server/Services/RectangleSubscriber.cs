@@ -56,8 +56,8 @@ namespace BouncingRectangles.Server.Services
 
         public void Dispose()
         {
-            _cancellationTokenSource.Dispose();
             _cancellationTokenSource.Cancel();
+            _cancellationTokenSource.Dispose();
         }
     }
 }
