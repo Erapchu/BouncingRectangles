@@ -58,12 +58,28 @@
                                             Storyboard.TargetName="MoveMeBaby"
                                             Storyboard.TargetProperty="X"
                                             To="{Binding X, NotifyOnTargetUpdated=True}"
-                                            Duration="0:0:1" />
+                                            Duration="0:0:1">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CircleEase EasingMode="EaseOut" />
+                                                <!--<BounceEase
+                                                    Bounces="2"
+                                                    Bounciness="2"
+                                                    EasingMode="EaseOut" />-->
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
                                         <DoubleAnimation
                                             Storyboard.TargetName="MoveMeBaby"
                                             Storyboard.TargetProperty="Y"
                                             To="{Binding Y, NotifyOnTargetUpdated=True}"
-                                            Duration="0:0:1" />
+                                            Duration="0:0:1">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CircleEase EasingMode="EaseOut" />
+                                                <!--<BounceEase
+                                                    Bounces="2"
+                                                    Bounciness="2"
+                                                    EasingMode="EaseOut" />-->
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </EventTrigger>
