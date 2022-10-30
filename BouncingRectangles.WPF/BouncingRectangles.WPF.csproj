@@ -15,7 +15,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BouncingRectangles.Client\BouncingRectangles.Client.csproj" />
-    <ProjectReference Include="..\BouncingRectangles.Domain\BouncingRectangles.Domain.csproj" />
   </ItemGroup>
 
 </Project>

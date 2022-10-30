@@ -1,5 +1,4 @@
-﻿using BouncingRectangles.Domain;
-using BouncingRectangles.WPF.ViewModels;
+﻿using BouncingRectangles.WPF.ViewModels;
 using System.Windows;
 
 namespace BouncingRectangles.WPF.Views
@@ -16,8 +15,6 @@ namespace BouncingRectangles.WPF.Views
             InitializeComponent();
             ViewModel = new MainViewModel();
             DataContext = ViewModel;
-            MainItemsControl.Width = Constants.FieldWidth;
-            MainItemsControl.Height = Constants.FieldHeight;
         }
     }
 }

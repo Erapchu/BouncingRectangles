@@ -33,7 +33,11 @@
             Opacity="0.7"
             Text="Loading..."
             Visibility="{Binding Loading, Converter={StaticResource BooleanToVisibilityConverter}}" />
-        <ItemsControl x:Name="MainItemsControl" ItemsSource="{Binding RectangleVMs}">
+        <ItemsControl
+            x:Name="MainItemsControl"
+            Width="500"
+            Height="500"
+            ItemsSource="{Binding RectangleVMs}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Canvas IsItemsHost="True" />

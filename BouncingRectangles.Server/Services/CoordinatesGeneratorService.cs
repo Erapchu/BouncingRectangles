@@ -1,5 +1,4 @@
-﻿using BouncingRectangles.Domain;
-using BouncingRectangles.Server.Models;
+﻿using BouncingRectangles.Server.Models;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
