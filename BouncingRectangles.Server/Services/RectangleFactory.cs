@@ -6,35 +6,41 @@ namespace BouncingRectangles.Server.Services
 {
     public interface IRectangleFactory
     {
-        public Rectangle GetRectangle();
+        public RectanglesGroup GetRectanglesGroup(Guid id);
+        public void SetGroupsCount(int count);
     }
 
     public class RectangleFactory : IRectangleFactory
     {
-        private readonly List<Rectangle> _rectangles = new();
-        private int _pointer = 0;
+        private readonly HashSet<RectanglesGroup> _rectanglesGroups = new();
+        private readonly int _rectanglesCount;
+        private int _groupsCount;
+
+        private int BatchCount
+        {
+            get
+            {
+
+            }
+        }
 
         public RectangleFactory()
         {
             var rnd = new Random();
-            var rectanglesCount = rnd.Next(100, 1000);
-            for (int i = 0; i < rectanglesCount; i++)
-            {
-                _rectangles.Add(Rectangle.CreateNew());
-            }
+            _rectanglesCount = rnd.Next(100, 1000);
         }
 
-        public Rectangle GetRectangle()
+        public RectanglesGroup GetRectanglesGroup(Guid id)
         {
-            lock (_rectangles)
-            {
-                if (_pointer >= _rectangles.Count)
-                    _pointer = 0;
+            if (_groupsCount == 0)
+                return null;
 
-                var rectangle = _rectangles[_pointer];
-                _pointer++;
-                return rectangle;
-            }
+            
+        }
+
+        public void SetGroupsCount(int count)
+        {
+            _groupsCount = count;
         }
     }
 }

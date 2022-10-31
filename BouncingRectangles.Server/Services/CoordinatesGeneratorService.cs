@@ -24,6 +24,9 @@ namespace BouncingRectangles.Server.Services
         private readonly List<Task> _tasks = new();
         private CancellationTokenSource _cancellationTokenSource;
 
+        private int MaxX { get; } = Constants.FieldWidth - Constants.RectangleWidth;
+        private int MaxY { get; } = Constants.FieldHeight - Constants.RectangleHeight;
+
         public CoordinatesGeneratorService(
             ILogger<CoordinatesGeneratorService> logger,
             IRectangleFactory rectangleFactory)
@@ -36,22 +39,24 @@ namespace BouncingRectangles.Server.Services
         {
             try
             {
-                var maxX = Constants.FieldWidth - Constants.RectangleWidth;
-                var maxY = Constants.FieldHeight - Constants.RectangleHeight;
+                var id = Guid.NewGuid();
 
                 while (!cancellationToken.IsCancellationRequested)
                 {
-                    var rectangle = _rectangleFactory.GetRectangle();
-                    if (rectangle is not null)
+                    var rectanglesGroup = _rectangleFactory.GetRectanglesGroup(id);
+                    if (rectanglesGroup is not null)
                     {
-                        rectangle.X = RandomNumberGenerator.GetInt32(maxX);
-                        rectangle.Y = RandomNumberGenerator.GetInt32(maxY);
-                        cancellationToken.ThrowIfCancellationRequested();
+                        foreach (var rectangle in rectanglesGroup.Rectangles)
+                        {
+                            rectangle.X = RandomNumberGenerator.GetInt32(MaxX);
+                            rectangle.Y = RandomNumberGenerator.GetInt32(MaxY);
+                            cancellationToken.ThrowIfCancellationRequested();
+                        }
 
                         lock (_coordinatedRects)
                         {
-                            _coordinatedRects.Remove(rectangle.Id);
-                            _coordinatedRects.Add(rectangle.Id, rectangle);
+                            _coordinatedRects.Remove(rectanglesGroup.Id);
+                            _coordinatedRects.Add(rectanglesGroup.Id, rectanglesGroup);
                         }
                     }
 
@@ -73,6 +78,8 @@ namespace BouncingRectangles.Server.Services
             _cancellationTokenSource = new CancellationTokenSource();
             var rnd = new Random();
             var tasksCount = rnd.Next(Environment.ProcessorCount);
+            _rectangleFactory.SetGroupsCount(tasksCount);
+
             var token = _cancellationTokenSource.Token;
             for (int i = 0; i < tasksCount; i++)
             {
