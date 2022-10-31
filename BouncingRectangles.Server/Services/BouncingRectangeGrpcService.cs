@@ -1,6 +1,7 @@
 ﻿using BouncingRectangles.Server.Models;
 using BouncingRectangles.Server.Protos;
 using Grpc.Core;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -11,14 +12,14 @@ namespace BouncingRectangles.Server.Services
 {
     public class BouncingRectangeGrpcService : Protos.BouncingRectangesDistributor.BouncingRectangesDistributorBase
     {
-        private readonly IRectangleSubscriberFactory _rectangleSubscriberFactory;
+        private readonly IServiceProvider _serviceProvider;
         private readonly ILogger<BouncingRectangeGrpcService> _logger;
 
         public BouncingRectangeGrpcService(
-            IRectangleSubscriberFactory rectangleSubscriberFactory,
+            IServiceProvider serviceProvider,
             ILogger<BouncingRectangeGrpcService> logger)
         {
-            _rectangleSubscriberFactory = rectangleSubscriberFactory;
+            _serviceProvider = serviceProvider;
             _logger = logger;
         }
 
@@ -27,7 +28,8 @@ namespace BouncingRectangles.Server.Services
             IServerStreamWriter<BouncingRectangleUpdateDto> responseStream,
             ServerCallContext context)
         {
-            var subscriber = _rectangleSubscriberFactory.GetSubscriber();
+            await using var scope = _serviceProvider.CreateAsyncScope();
+            var subscriber = scope.ServiceProvider.GetService<IRectangleSubscriber>();
             if (subscriber is null)
                 return;
             subscriber.Update += async (sender, e) =>
@@ -36,7 +38,6 @@ namespace BouncingRectangles.Server.Services
             _logger.LogInformation("Subscription started");
             // Just awaits for client closes the connection/interrupted somehow
             await WaitForCancellation(context.CancellationToken);
-            subscriber.Dispose(); // Dispose subscriber
             _logger.LogInformation("Subscription finished");
         }
 

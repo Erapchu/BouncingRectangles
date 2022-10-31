@@ -8,7 +8,6 @@ builder.Services.AddSingleton<CoordinatesGeneratorService>();
 builder.Services.AddHostedService<CoordinatesGeneratorService>(s => s.GetRequiredService<CoordinatesGeneratorService>());
 builder.Services.AddSingleton<ICoordinatesGeneratorService>(s => s.GetRequiredService<CoordinatesGeneratorService>());
 builder.Services.AddSingleton<IRectangleFactory, RectangleFactory>();
-builder.Services.AddSingleton<IRectangleSubscriberFactory, RectangleSubscriberFactory>();
 builder.Services.AddTransient<IRectangleSubscriber, RectangleSubscriber>();
 
 builder.Services.AddGrpc();
