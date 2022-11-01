@@ -1,26 +1,19 @@
-﻿using BouncingRectangles.Server.Models;
-using Microsoft.Extensions.Hosting;
+﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace BouncingRectangles.Server.Services
 {
-    public interface ICoordinatesGeneratorService
-    {
-        public IEnumerable<Rectangle> GetRectangles();
-    }
-
-    public class CoordinatesGeneratorService : ICoordinatesGeneratorService, IHostedService
+    public class CoordinatesGeneratorService : IHostedService
     {
         private readonly ILogger<CoordinatesGeneratorService> _logger;
-        private readonly IRectangleFactory _rectangleFactory;
-        private readonly TimeSpan _generateInterval = TimeSpan.FromMilliseconds(200);
-        private readonly Dictionary<Guid, Rectangle> _coordinatedRects = new();
+        private readonly IRectanglesFactory _rectangleFactory;
+        private readonly ITaskCountDeterminator _taskCountDeterminator;
+        private readonly TimeSpan _generateInterval = TimeSpan.FromMilliseconds(100);
         private readonly List<Task> _tasks = new();
         private CancellationTokenSource _cancellationTokenSource;
 
@@ -29,10 +22,12 @@ namespace BouncingRectangles.Server.Services
 
         public CoordinatesGeneratorService(
             ILogger<CoordinatesGeneratorService> logger,
-            IRectangleFactory rectangleFactory)
+            IRectanglesFactory rectangleFactory,
+            ITaskCountDeterminator taskCountDeterminator)
         {
             _logger = logger;
             _rectangleFactory = rectangleFactory;
+            _taskCountDeterminator = taskCountDeterminator;
         }
 
         private async Task GenereateCoordinates(CancellationToken cancellationToken)
@@ -40,27 +35,23 @@ namespace BouncingRectangles.Server.Services
             try
             {
                 var id = Guid.NewGuid();
-
-                while (!cancellationToken.IsCancellationRequested)
+                if (_rectangleFactory.CreateRectanglesGroup(id, out var rectanglesGroup))
                 {
-                    var rectanglesGroup = _rectangleFactory.GetRectanglesGroup(id);
-                    if (rectanglesGroup is not null)
+                    while (!cancellationToken.IsCancellationRequested)
                     {
-                        foreach (var rectangle in rectanglesGroup.Rectangles)
+                        foreach (var rectangle in rectanglesGroup.Items)
                         {
                             rectangle.X = RandomNumberGenerator.GetInt32(MaxX);
                             rectangle.Y = RandomNumberGenerator.GetInt32(MaxY);
                             cancellationToken.ThrowIfCancellationRequested();
                         }
 
-                        lock (_coordinatedRects)
-                        {
-                            _coordinatedRects.Remove(rectanglesGroup.Id);
-                            _coordinatedRects.Add(rectanglesGroup.Id, rectanglesGroup);
-                        }
+                        await Task.Delay(_generateInterval, cancellationToken);
                     }
-
-                    await Task.Delay(_generateInterval, cancellationToken);
+                }
+                else
+                {
+                    _logger.LogWarning("Can't create rectangles group with id '{0}'", id);
                 }
             }
             catch (OperationCanceledException)
@@ -76,10 +67,7 @@ namespace BouncingRectangles.Server.Services
         public Task StartAsync(CancellationToken cancellationToken)
         {
             _cancellationTokenSource = new CancellationTokenSource();
-            var rnd = new Random();
-            var tasksCount = rnd.Next(Environment.ProcessorCount);
-            _rectangleFactory.SetGroupsCount(tasksCount);
-
+            var tasksCount = _taskCountDeterminator.GetCount();
             var token = _cancellationTokenSource.Token;
             for (int i = 0; i < tasksCount; i++)
             {
@@ -95,16 +83,6 @@ namespace BouncingRectangles.Server.Services
             _cancellationTokenSource.Dispose();
 
             return Task.CompletedTask;
-        }
-
-        public IEnumerable<Rectangle> GetRectangles()
-        {
-            List<Rectangle> rectanglesList = null;
-            lock (_coordinatedRects)
-            {
-                rectanglesList = _coordinatedRects.Values.ToList();
-            }
-            return rectanglesList;
         }
     }
 }
