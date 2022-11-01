@@ -26,7 +26,7 @@ namespace BouncingRectangles.Server.Services
             _rectanglesCount = rnd.Next(100, 1000);
             _maxGroupsCount = taskCountDeterminator.GetCount();
             _batchSize = _rectanglesCount / _maxGroupsCount;
-            _overloadedCount = _rectanglesCount - _batchSize * _maxGroupsCount;
+            _overloadedCount = _rectanglesCount % _maxGroupsCount;
         }
 
         public bool CreateRectanglesGroup(Guid id, out Group rectanglesGroup)
@@ -39,16 +39,8 @@ namespace BouncingRectangles.Server.Services
                     int capacity = _batchSize;
                     if (_overloadedCount > 0)
                     {
-                        if (_rectanglesGroups.Count == _maxGroupsCount - 1) // Last group
-                        {
-                            capacity += _overloadedCount;
-                            _overloadedCount = 0;
-                        }
-                        else // Usual group
-                        {
-                            capacity++;
-                            _overloadedCount--;
-                        }
+                        capacity++;
+                        _overloadedCount--;
                     }
                     rectanglesGroup = new Group(id, capacity);
                     result = _rectanglesGroups.Add(rectanglesGroup);
