@@ -4,10 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddSingleton<CoordinatesGeneratorService>();
-builder.Services.AddHostedService<CoordinatesGeneratorService>(s => s.GetRequiredService<CoordinatesGeneratorService>());
-builder.Services.AddSingleton<ICoordinatesGeneratorService>(s => s.GetRequiredService<CoordinatesGeneratorService>());
-builder.Services.AddSingleton<IRectangleFactory, RectangleFactory>();
+builder.Services.AddHostedService<CoordinatesGeneratorService>();
+builder.Services.AddSingleton<IRectanglesFactory, RectanglesFactory>();
+builder.Services.AddSingleton<ITaskCountDeterminator, TaskCountDeterminator>();
 builder.Services.AddTransient<IRectangleSubscriber, RectangleSubscriber>();
 
 builder.Services.AddGrpc();

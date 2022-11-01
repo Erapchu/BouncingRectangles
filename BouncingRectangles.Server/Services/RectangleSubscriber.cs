@@ -18,16 +18,16 @@ namespace BouncingRectangles.Server.Services
         private readonly Task _task;
         private readonly TimeSpan _updateTimeout = TimeSpan.FromMilliseconds(200);
         private readonly ILogger<RectangleSubscriber> _logger;
-        private readonly ICoordinatesGeneratorService _coordinatesGeneratorService;
+        private readonly IRectanglesFactory _rectanglesFactory;
 
         public RectangleSubscriber(
             ILogger<RectangleSubscriber> logger,
-            ICoordinatesGeneratorService coordinatesGeneratorService)
+            IRectanglesFactory rectanglesFactory)
         {
             _cancellationTokenSource = new CancellationTokenSource();
             _task = RunNotify(_cancellationTokenSource.Token);
             _logger = logger;
-            _coordinatesGeneratorService = coordinatesGeneratorService;
+            _rectanglesFactory = rectanglesFactory;
         }
 
         private async Task RunNotify(CancellationToken token)
@@ -38,7 +38,7 @@ namespace BouncingRectangles.Server.Services
                 {
                     if (Update != null)
                     {
-                        var rectangles = _coordinatesGeneratorService.GetRectangles();
+                        var rectangles = _rectanglesFactory.GetRectangles();
                         Update.Invoke(this, new RectangleUpdateEventArgs(rectangles));
                     }
                     await Task.Delay(_updateTimeout, token);
