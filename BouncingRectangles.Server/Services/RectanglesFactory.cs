@@ -8,12 +8,12 @@ namespace BouncingRectangles.Server.Services
     public interface IRectanglesFactory
     {
         public IEnumerable<Rectangle> GetRectangles();
-        public bool CreateRectanglesGroup(Guid id, out Group<Rectangle> rectanglesGroup);
+        public bool CreateRectanglesGroup(Guid id, out Group rectanglesGroup);
     }
 
     public class RectanglesFactory : IRectanglesFactory
     {
-        private readonly Dictionary<Guid, Group<Rectangle>> _rectanglesGroups = new();
+        private readonly Dictionary<Guid, Group> _rectanglesGroups = new();
         private readonly int _rectanglesCount;
         private readonly object _lock = new();
         private readonly int _maxGroupsCount;
@@ -27,17 +27,17 @@ namespace BouncingRectangles.Server.Services
             _batchSize = _rectanglesCount / _maxGroupsCount;
         }
 
-        public bool CreateRectanglesGroup(Guid id, out Group<Rectangle> rectanglesGroup)
+        public bool CreateRectanglesGroup(Guid id, out Group rectanglesGroup)
         {
+            var result = false;
             lock (_lock)
             {
-                var result = false;
                 if (_rectanglesGroups.Count < _maxGroupsCount)
                 {
                     int capacity = _rectanglesGroups.Count == _maxGroupsCount - 1
                         ? _rectanglesCount - _batchSize * (_maxGroupsCount - 1) // last group case
                         : _batchSize; // usual group
-                    rectanglesGroup = new Group<Rectangle>(id, capacity);
+                    rectanglesGroup = new Group(id, capacity);
                     result = _rectanglesGroups.TryAdd(id, rectanglesGroup);
                 }
                 else
@@ -45,9 +45,12 @@ namespace BouncingRectangles.Server.Services
                     // Can't add more
                     rectanglesGroup = null;
                 }
-
-                return result;
             }
+
+            if (result)
+                rectanglesGroup.FillItems();
+
+            return result;
         }
 
         public IEnumerable<Rectangle> GetRectangles()
@@ -56,7 +59,7 @@ namespace BouncingRectangles.Server.Services
             IEnumerable<Rectangle> extracted;
             lock (_lock)
             {
-                extracted = _rectanglesGroups.Values.SelectMany(r => r.Items);
+                extracted = _rectanglesGroups.Values.SelectMany(r => r.Items).ToList();
             }
             rectangles.AddRange(extracted);
             return rectangles;
