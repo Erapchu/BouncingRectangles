@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace BouncingRectangles.Server.Models
 {
-    [DebuggerDisplay("Capacity: {_capacity}, Count: {Items.Count}, Id: {Id}")]
+    [DebuggerDisplay("Capacity: {_capacity}, Count: {_items.Count}, Id: {Id}")]
     public class Group
     {
         private readonly int _capacity;
@@ -38,6 +38,17 @@ namespace BouncingRectangles.Server.Models
             {
                 return _items;
             }
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Group group &&
+                   Id.Equals(group.Id);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace BouncingRectangles.Server.Services
 
     public class RectanglesFactory : IRectanglesFactory
     {
-        private readonly Dictionary<Guid, Group> _rectanglesGroups = new();
+        private readonly HashSet<Group> _rectanglesGroups = new();
         private readonly int _rectanglesCount;
         private readonly object _lock = new();
         private readonly int _maxGroupsCount;
@@ -38,7 +38,7 @@ namespace BouncingRectangles.Server.Services
                         ? _rectanglesCount - _batchSize * (_maxGroupsCount - 1) // last group case
                         : _batchSize; // usual group
                     rectanglesGroup = new Group(id, capacity);
-                    result = _rectanglesGroups.TryAdd(id, rectanglesGroup);
+                    result = _rectanglesGroups.Add(rectanglesGroup);
                 }
                 else
                 {
@@ -59,7 +59,7 @@ namespace BouncingRectangles.Server.Services
             IEnumerable<Rectangle> extracted;
             lock (_lock)
             {
-                extracted = _rectanglesGroups.Values.SelectMany(g => g.GetItems()).ToList();
+                extracted = _rectanglesGroups.SelectMany(g => g.GetItems()).ToList();
             }
             rectangles.AddRange(extracted);
             return rectangles;
