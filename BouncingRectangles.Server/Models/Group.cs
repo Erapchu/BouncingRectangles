@@ -8,23 +8,35 @@ namespace BouncingRectangles.Server.Models
     public class Group
     {
         private readonly int _capacity;
+        private readonly List<Rectangle> _items;
+        private readonly object _locker = new();
 
         public Guid Id { get; }
-        public List<Rectangle> Items { get; }
 
         public Group(Guid id, int capacity)
         {
             Id = id;
             _capacity = capacity;
-            Items = new List<Rectangle>(capacity);
+            _items = new List<Rectangle>(capacity);
         }
 
-        public void FillItems()
+        public void RefreshItems()
         {
-            Items.Clear();
-            for (int i = 0; i < _capacity; i++)
+            lock (_locker)
             {
-                Items.Add(Rectangle.CreateNew());
+                _items.Clear();
+                for (int i = 0; i < _capacity; i++)
+                {
+                    _items.Add(Rectangle.CreateNew());
+                }
+            }
+        }
+
+        public IReadOnlyCollection<Rectangle> GetItems()
+        {
+            lock (_locker)
+            {
+                return _items;
             }
         }
     }

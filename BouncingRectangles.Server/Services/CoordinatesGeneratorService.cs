@@ -39,7 +39,7 @@ namespace BouncingRectangles.Server.Services
                 {
                     while (!cancellationToken.IsCancellationRequested)
                     {
-                        foreach (var rectangle in rectanglesGroup.Items)
+                        foreach (var rectangle in rectanglesGroup.GetItems())
                         {
                             rectangle.X = RandomNumberGenerator.GetInt32(MaxX);
                             rectangle.Y = RandomNumberGenerator.GetInt32(MaxY);

@@ -48,7 +48,7 @@ namespace BouncingRectangles.Server.Services
             }
 
             if (result)
-                rectanglesGroup.FillItems();
+                rectanglesGroup.RefreshItems();
 
             return result;
         }
@@ -59,7 +59,7 @@ namespace BouncingRectangles.Server.Services
             IEnumerable<Rectangle> extracted;
             lock (_lock)
             {
-                extracted = _rectanglesGroups.Values.SelectMany(r => r.Items).ToList();
+                extracted = _rectanglesGroups.Values.SelectMany(g => g.GetItems()).ToList();
             }
             rectangles.AddRange(extracted);
             return rectangles;
